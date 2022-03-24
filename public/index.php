@@ -11,9 +11,18 @@ $params = array_slice($pieces, 1);
 
 $controllerNamespace = "Controller\\{$class}";
 
-$newClass = new $controllerNamespace();
+try {
+    $newClass = new $controllerNamespace();
+    $result = $newClass->{$method}(...$params);
+} catch (\Throwable $th) {
+    $result = [
+        'result' => 'Not found'
+    ];
 
-$result = $newClass->{$method}(...$params);
+    http_response_code(404);
+}
+
+
 
 header('Content-Type: application/json');
 
