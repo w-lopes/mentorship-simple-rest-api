@@ -1,19 +1,29 @@
 <?php
 
-require_once './autoload.php';
+require_once "./autoload.php";
 
 use \Common\Hash;
 use \Common\Crypt;
 
-// $teste = Hash::makeHash('senhaqualquer');
+$passwd = "senhaqualquer";
+$teste = Hash::makeHash($passwd);
+$res = Hash::checkHash($passwd, $teste);
 
-// $res = Hash::checkHash('senhaqualquer', $teste);
+echo "Pass : {$passwd}" . PHP_EOL;
+echo "Hash : {$teste}" . PHP_EOL;
+echo "Res  : " . ($res ? "Senha válida" : "Senha inválida") . PHP_EOL;
 
-$obj = (object)['um' => 1, 'dois' => 'qualquer coisa', 3 => '3'];
+echo "--------------------------------------------" . PHP_EOL;
 
+$obj = (object) [
+    "um"   => 1,
+    "dois" => "qualquer coisa",
+    3      => "3"
+];
+$enc = Crypt::encrypt($obj);
+$dec = Crypt::decrypt($enc);
 
-$teste = Crypt::encrypt($obj);
-
-$testeDois = Crypt::decrypt($teste);
-
-var_dump($testeDois);
+var_dump(
+    $enc,
+    $dec
+);
