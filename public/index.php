@@ -2,6 +2,8 @@
 
 require_once '../autoload.php';
 
+use Attributes\Middleware;
+
 $requestUri = $_SERVER['REQUEST_URI'];
 $method = $_SERVER['REQUEST_METHOD'];
 
@@ -11,7 +13,10 @@ $params = array_slice($pieces, 1);
 
 $controllerNamespace = "Controller\\{$class}";
 
+header('Content-Type: application/json');
+
 try {
+    Middleware::apply($controllerNamespace, $method);
     $newClass = new $controllerNamespace();
     $result = $newClass->{$method}(...$params);
 } catch (\Throwable $th) {
@@ -21,8 +26,5 @@ try {
 
     http_response_code(404);
 }
-
-
-header('Content-Type: application/json');
 
 echo json_encode($result);
