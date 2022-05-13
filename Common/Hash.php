@@ -6,9 +6,8 @@ class Hash
 {
     public static function makeHash(string $str): string
     {
-        return password_hash($str, PASSWORD_DEFAULT);
+        return password_hash($str, PASSWORD_BCRYPT);
     }
-
 
     public static function checkHash(string $str, string $hash): bool
     {
