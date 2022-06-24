@@ -13,7 +13,7 @@ class Connection
         }
     }
 
-    public function insert(string $table, array $data)
+    public function insert(string $table, array $data): bool
     {
         $dataKeys = array_keys($data);
         $fields = implode(", ", $dataKeys);
@@ -25,4 +25,19 @@ class Connection
 
         return $stmt->execute($data);
     }
+
+    public function select(string $table, array $fields = [], array $where = []): mixed
+    {
+        $selectedFields = empty($fields) ? "*" : implode(", ", $fields);
+        $selectedWhere  = implode(" and ", array_map(function ($field) {
+            return "{$field}=:{$field}";
+        }, $where));
+        $query = "select {$selectedFields} from {$table} where {$selectedWhere}";
+        $stmt = self::$instance->prepare($query);
+        $stmt->execute($where);
+
+        return $stmt->fetch();
+    }
+
+    // fazer o selectAll
 }
