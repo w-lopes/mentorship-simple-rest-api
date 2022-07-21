@@ -13,7 +13,7 @@ $params = array_slice($pieces, 1);
 
 $controllerNamespace = "Controller\\{$class}";
 
-// header('Content-Type: application/json');
+header('Content-Type: application/json');
 
 try {
     Middleware::apply($controllerNamespace, $method);
