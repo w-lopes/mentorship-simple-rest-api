@@ -31,7 +31,7 @@ class Connection
         $selectedFields = empty($fields) ? "*" : implode(", ", $fields);
         $selectedWhere  = implode(" and ", array_map(function ($field) {
             return "{$field}=:{$field}";
-        }, $where));
+        }, array_keys($where)));
         $query = "select {$selectedFields} from {$table} where {$selectedWhere}";
         $stmt = self::$instance->prepare($query);
         $stmt->execute($where);
